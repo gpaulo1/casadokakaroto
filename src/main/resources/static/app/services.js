@@ -1,5 +1,5 @@
 (function(angular) {
-  var ClienteFactory = function($resource) {
+  var ProductOrderFactory = function($resource) {
     return $resource('/products', {
       id: '@id',
       valor: '@valor',
@@ -15,6 +15,6 @@
       }
     });
   };
-  ClienteFactory.$inject = ['$resource'];
-  angular.module("myApp.services").factory("Cliente", ClienteFactory);
+  ProductOrderFactory.$inject = ['$resource'];
+  angular.module("myApp.services").factory("ProductOrder", ProductOrderFactory);
 }(angular));

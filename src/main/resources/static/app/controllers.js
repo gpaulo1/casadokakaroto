@@ -1,19 +1,18 @@
 (function(angular) {
-	var AppController = function($scope, $http, Cliente) {
+	var AppController = function($scope, $http, ProductOrder) {
 		$scope.clienteSaque;
 
 		// init variables
 		$scope.dollarVal = 'loading...';
 		$scope.currentDate = moment().format('YYYY-MM-DD');
 		$scope.mdAddProduct = "";
-		$scope.productCopy = null;
 		$scope.pictures = [];
 		// Load mask money
 		$("#mdPrice").maskMoney();
 		$("#mdDollarValue").maskMoney();
 		$("#mdShippingValue").maskMoney();
 		
-		Cliente.query(function(response) {
+		ProductOrder.query(function(response) {
 			$scope.clientes = response ? response : [];
 		});
 		
@@ -47,11 +46,20 @@
 		 */
 		$scope.saveProduct = function() {
 
-			$scope.productCopy = angular.copy($scope.mdAddProduct);
-			$scope.productCopy.orderDate = "10/10/2018";
+			if(!$scope.isSaveProductFieldsValid()){
+				return;
+			}
 			
-			Product.query(function(response) {
-				$scope.clientes.saqueRealizado = response;
+			new ProductOrder({
+				description: 		$scope.mdAddProduct.description,
+				shippingType: 		$scope.mdAddProduct.shippingType,
+				price: 				$scope.mdAddProduct.price.substr(5),
+				quantity: 			$scope.mdAddProduct.quantity,
+				orderDate: 			$scope.mdAddProduct.orderDate,
+				dollarPrice: 		$scope.mdAddProduct.dollarPrice.substr(5),
+				shippingCost: 		$scope.mdAddProduct.shippingCost.substr(5)
+			}).$save(function(cliente) {
+				console.log(cliente);
 			});
 
 			if (!$scope.isSaveProductFieldsValid()) {
@@ -84,8 +92,6 @@
 			if (priceFormatted < 0.00) {
 				isValid = false;
 				alertify.error("Campo 'Valor de Compra' inválido.");
-			} else {
-				$scope.productCopy.price = priceFormatted;
 			}
 
 			// Order date
@@ -100,8 +106,6 @@
 			if (dollarPriceFormatted < 0.00) {
 				isValid = false;
 				alertify.error("Campo 'Valor do Dólar' inválido.");
-			} else {
-				$scope.productCopy.dollarPrice = dollarPriceFormatted;
 			}
 
 			// Shipping price
@@ -110,8 +114,6 @@
 			if (shippingPriceFormatted < 0.00) {
 				isValid = false;
 				alertify.error("Campo 'Valor do Frete' inválido.");
-			} else {
-				$scope.productCopy.shippingCost = shippingPriceFormatted;
 			}
 
 			return isValid;
@@ -174,7 +176,7 @@
 
 	};
 
-	AppController.$inject = [ '$scope', '$http', 'Cliente' ];
+	AppController.$inject = [ '$scope', '$http', 'ProductOrder' ];
 	angular.module("myApp.controllers").controller("AppController",
 			AppController);
 }(angular));
