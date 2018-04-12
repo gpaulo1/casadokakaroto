@@ -11,6 +11,7 @@ public class ProductOrderForm {
 	private Date orderDate;
 	private Double dollarPrice;
 	private Double shippingCost;
+	private String status;
 
 	public String getDescription() {
 		return description;
@@ -67,5 +68,13 @@ public class ProductOrderForm {
 	public void setShippingCost(Double shippingCost) {
 		this.shippingCost = shippingCost;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

@@ -22,13 +22,14 @@
 		$scope.modaladdProduct = function() {
 
 			$scope.mdAddProduct = {
-				description : '',
-				quantity : 1,
-				price : 'USD $0.00',
-				orderDate : new Date($scope.currentDate),
-				dollarPrice : 'USD $' + $scope.dollarVal,
-				shippingType : 'Gratuito',
-				shippingCost : 'USD $0.00'
+				description :	 '',
+				quantity :		 1,
+				price : 		 'USD $0.00',
+				orderDate : 	 new Date($scope.currentDate),
+				dollarPrice : 	 'USD $' + $scope.dollarVal,
+				shippingType : 	 'Gratuito',
+				shippingCost : 	 'USD $0.00',
+				status: 		 'Ainda não'
 			};
 
 			$('#modalAddProduct').modal('toggle')
@@ -45,7 +46,7 @@
 		 * Save new one product at data base
 		 */
 		$scope.saveProduct = function() {
-
+			
 			if(!$scope.isSaveProductFieldsValid()){
 				return;
 			}
@@ -57,15 +58,14 @@
 				quantity: 			$scope.mdAddProduct.quantity,
 				orderDate: 			$scope.mdAddProduct.orderDate,
 				dollarPrice: 		$scope.mdAddProduct.dollarPrice.substr(5),
-				shippingCost: 		$scope.mdAddProduct.shippingCost.substr(5)
-			}).$save(function(cliente) {
-				console.log(cliente);
+				shippingCost: 		$scope.mdAddProduct.shippingCost.substr(5),
+				status:				$scope.mdAddProduct.status
+			}).$save(function(data) {
+				if(data != null){
+					alertify.success("Produto salvo com sucesso ;)");
+				}
 			});
-
-			if (!$scope.isSaveProductFieldsValid()) {
-				return;
-			}
-
+			
 		}
 		
 		/**
