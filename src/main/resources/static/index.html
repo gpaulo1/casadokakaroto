@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="./bower_components/components-font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet"
+	href="./alertifyjs/css/alertify.min.css" />
+
+</head>
+<body ng-app="myApp" ng-controller="AppController">
+
+	<div class="container-fluid">
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+			<a class="navbar-brand" href="#">My App</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<form class="form-inline">
+						<button class="btn btn-outline-primary" type="button"
+							ng-click="modaladdProduct()">
+							<i class="fas fa-plus-circle"></i> Adicionar
+						</button>
+					</form>
+				</ul>
+
+				<span class="badge badge-primary">USD <i
+					class="fas fa-dollar-sign"></i>{{dollarVal}}
+				</span>
+			</div>
+		</nav>
+	</div>
+
+	<div class="container"></div>
+
+	<!-- Modal cadastrar produto -->
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+		id="modalAddProduct" aria-labelledby="myLargeModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Adicionar
+						Produto</h5>
+				</div>
+				<div class="modal-body">
+
+					<form ng-submit="saveProduct()">
+						<div class="form-row">
+							<div class="form-group col-md-10">
+								<label for="mdDescription">Descrição</label> <input type="text"
+									ng-model="mdAddProduct.description" class="form-control"
+									id="mdDescription" ng-keyup="isValidDescription()"
+									ng-class="myVar">
+							</div>
+							<div class="form-group col-md-2">
+								<label for="mdQuantity">Quantidade</label> <input type="number"
+									ng-model="mdAddProduct.quantity" class="form-control"
+									ng-keyup="isValidQuantity()" id="mdQuantity"
+									ng-class="isValidField" ng-class="isValidQuantity()">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-5">
+								<label for="mdPrice">Valor de Compra</label> <input type="text"
+									ng-model="mdAddProduct.price" class="form-control" id="mdPrice"
+									data-thousands="" data-decimal="." data-prefix="USD $"
+									ng-class="isValidField" ng-keyup="isValidPrice()">
+							</div>
+							<div class="form-group col-md-4">
+								<label for="mdOrderDate">Data da Compra</label> <input
+									ng-model="mdAddProduct.orderDate" type="date"
+									class="form-control" id="mdOrderDate">
+							</div>
+							<div class="form-group col-md-3">
+								<label for="mdDollarValue">Valor do Dolar</label> <input
+									ng-model="mdAddProduct.dollarPrice" type="text"
+									class="form-control" id="mdDollarValue" data-decimal="."
+									data-thousands="" data-prefix="USD $">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-9">
+								<label for="inputState">Tipo de Frete</label> <select
+									ng-model="mdAddProduct.shippingType" id="mdShippingType"
+									class="form-control">
+									<option selected>Gratuito</option>
+									<option>ePackage</option>
+									<option>AliExpress Standard Shipping</option>
+									<option>Outro</option>
+								</select>
+							</div>
+							<div class="form-group col-md-3">
+								<label for="mdShippingCost">Valor do Frete</label> <input
+									ng-model="mdAddProduct.shippingCost" type="text"
+									class="form-control" id="mdShippingValue"
+									data-decimal="." data-thousands=""
+									data-prefix="USD $">
+							</div>
+
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-4">
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" multiple="multiple" onchange="angular.element(this).scope().fileSelected(this)">
+									<label class="custom-file-label" for="customFile">Selecionar Imagens</label>
+								</div>
+							</div>
+						</div>
+						
+					</form>
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">
+						<i class="fas fa-times"></i> Cancelar
+					</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="saveProduct()">
+						<i class="far fa-save"></i> Salvar
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="./bower_components/jquery/dist/jquery.js"></script>
+	<script defer src="./font-awesome/svg-with-js/js/fontawesome-all.js"></script>
+	<script type="text/javascript"
+		src="./bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript"
+		src="./bower_components/angular-resource/angular-resource.min.js"></script>
+	<script type="text/javascript"
+		src="./bower_components/lodash/dist/lodash.min.js"></script>
+	<script type="text/javascript" src="./app/app.js"></script>
+	<script type="text/javascript" src="./app/controllers.js"></script>
+	<script type="text/javascript" src="./app/services.js"></script>
+	<script type="text/javascript"
+		src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./maskMoney/jquery.maskMoney.js"></script>
+	<script type="text/javascript"
+		src="./bower_components/angularjs-datepicker/src/js/angular-datepicker.js"></script>
+	<script type="text/javascript" src="./momentjs/moment.js"></script>
+	<script type="text/javascript" src="./alertifyjs/alertify.min.js"></script>
+
+</body>
+</html>
