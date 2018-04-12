@@ -1,6 +1,6 @@
 (function(angular) {
   var ClienteFactory = function($resource) {
-    return $resource('/clientes/:id/:valor', {
+    return $resource('/products', {
       id: '@id',
       valor: '@valor',
     }, {

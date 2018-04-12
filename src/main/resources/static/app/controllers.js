@@ -35,6 +35,96 @@
 			$('#modalAddProduct').modal('toggle')
 		}
 		
+		/**
+		 * Set pictures to related object
+		 */
+		$scope.fileSelected = function(elements) {
+			$scope.pictures = elements.files;
+		}
+		
+		/**
+		 * Save new one product at data base
+		 */
+		$scope.saveProduct = function() {
+
+			$scope.productCopy = angular.copy($scope.mdAddProduct);
+			$scope.productCopy.orderDate = "10/10/2018";
+			
+			Product.query(function(response) {
+				$scope.clientes.saqueRealizado = response;
+			});
+
+			if (!$scope.isSaveProductFieldsValid()) {
+				return;
+			}
+
+		}
+		
+		/**
+		 * Check if save product form has valid fields before send the object
+		 */
+		$scope.isSaveProductFieldsValid = function() {
+
+			var isValid = true;
+
+			// Description
+			if ($scope.mdAddProduct.description == "") {
+				isValid = false;
+				alertify.error("Campo 'Descrição' inválido.");
+			}
+
+			// Quantity
+			if ($scope.mdAddProduct.quantity < 0) {
+				isValid = false;
+				alertify.error("Campo 'Quantidade' inválido.");
+			}
+
+			// Price
+			var priceFormatted = $scope.mdAddProduct.price.substr(5);
+			if (priceFormatted < 0.00) {
+				isValid = false;
+				alertify.error("Campo 'Valor de Compra' inválido.");
+			} else {
+				$scope.productCopy.price = priceFormatted;
+			}
+
+			// Order date
+			if (!moment($scope.ordertDate).isValid()) {
+				isValid = false;
+				alertify.error("Campo 'Data da Compra' inválido.");
+			}
+
+			// Dollar value
+			var dollarPriceFormatted = $scope.mdAddProduct.dollarPrice
+					.substr(5);
+			if (dollarPriceFormatted < 0.00) {
+				isValid = false;
+				alertify.error("Campo 'Valor do Dólar' inválido.");
+			} else {
+				$scope.productCopy.dollarPrice = dollarPriceFormatted;
+			}
+
+			// Shipping price
+			var shippingPriceFormatted = $scope.mdAddProduct.shippingCost
+					.substr(5);
+			if (shippingPriceFormatted < 0.00) {
+				isValid = false;
+				alertify.error("Campo 'Valor do Frete' inválido.");
+			} else {
+				$scope.productCopy.shippingCost = shippingPriceFormatted;
+			}
+
+			return isValid;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
