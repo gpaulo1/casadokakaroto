@@ -2,10 +2,49 @@
 	var AppController = function($scope, $http, Cliente) {
 		$scope.clienteSaque;
 
+		// init variables
+		$scope.dollarVal = 'loading...';
+		$scope.currentDate = moment().format('YYYY-MM-DD');
+		$scope.mdAddProduct = "";
+		$scope.productCopy = null;
+		$scope.pictures = [];
+		// Load mask money
+		$("#mdPrice").maskMoney();
+		$("#mdDollarValue").maskMoney();
+		$("#mdShippingValue").maskMoney();
+		
 		Cliente.query(function(response) {
 			$scope.clientes = response ? response : [];
 		});
+		
+		/**
+		 * Open modal to insert new product order
+		 */
+		$scope.modaladdProduct = function() {
 
+			$scope.mdAddProduct = {
+				description : '',
+				quantity : 1,
+				price : 'USD $0.00',
+				orderDate : new Date($scope.currentDate),
+				dollarPrice : 'USD $' + $scope.dollarVal,
+				shippingType : 'Gratuito',
+				shippingCost : 'USD $0.00'
+			};
+
+			$('#modalAddProduct').modal('toggle')
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		$scope.addCliente = function(cNome, cSaldo) {
 			new Cliente({
 				nome : cNome,
